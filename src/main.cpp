@@ -32,7 +32,7 @@ MyWebServer myWebServer;
 
 #include "HardwareInOutput/rcswitch_values.h"
 
-MyTimer isr_timer(300), displayRefreshRate(500);
+MyTimer isr_timer(300), displayRefreshRate(300);
 
 void IRAM_ATTR buttonPin_isr()
 {
@@ -59,9 +59,9 @@ void* rc_serial_com_routine(void* p)
 		for(int i = 0; i < LampOutput::number_of_lamps; i++)
 		{
 			EEPROMSynch::instance.sendLampStateToLamp(i);
+
 		}
 		Serial.println();
-		delay(10);
 	}
 }
 
@@ -101,4 +101,8 @@ void setup()
 
 void loop() {
 	// Webserver handlers are supposed to run on main-thread
+	while(1)
+	{
+		
+	}
 }

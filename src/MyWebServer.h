@@ -41,7 +41,7 @@ body {
   border: 1px solid #333;
   box-shadow: 8px 8px 5px #444;
   padding: 8px 12px;
-  background-image: linear-gradient(180deg, #fff, #ddd 40vw, #ccc);
+  background-image: linear-gradient(180deg, #fff, #ddd 40%%, #ccc);
 }
 
 h1 {
@@ -63,14 +63,14 @@ p {
   opacity: 0.7;
 
   height: 50px;
-  width: 15vw;
+  width: 15%%;
   margin-left: 10px;
 }
 .button:hover {
   opacity: 1; /* Fully shown on mouse-over */
 }
 .slidecontainer {
-  width: 50vw; /* Width of the outside container */  
+  width: 100%%; /* Width of the outside container */  
   float: right;
   
   padding-left: 5px;
@@ -80,7 +80,7 @@ p {
 .slider {
   -webkit-appearance: none;  /* Override default CSS styles */
   appearance: none;
-  width: 50vw; /* Full-width */
+  width: 100%%; /* Full-width */
   height: 40px;
   background: lightblue; /* Grey background */
   outline: none; /* Remove outline */
@@ -184,22 +184,25 @@ private:
 	}
 
 	static String processor(const String& var)
-	{
-	if(var == "SLIDEMENTS"){
-		String buttons = "";
-
-		for(int i = 0; i < LampOutput::number_of_lamps; i++)
+	{	
+		if(var == "")
 		{
-			buttons += "<p>"+light_names[i]+"</p>"
-			+ open_div()
-			+ create_sliderSettingBtn(i, 0, "Immer aus")
-			+ create_slider(i)
-			+ create_sliderSettingBtn(i, 10, "Immer an")
-			+ close_div();
+			return String("%");
+		}else if(var == "SLIDEMENTS"){
+			String buttons = "";
+
+			for(int i = 0; i < LampOutput::number_of_lamps; i++)
+			{
+				buttons += "<p>"+light_names[i]+"</p>"
+				+ open_div()
+				+ create_sliderSettingBtn(i, 0, "Immer aus")
+				+ create_slider(i)
+				+ create_sliderSettingBtn(i, 10, "Immer an")
+				+ close_div();
+			}
+			return buttons;
 		}
-		return buttons;
-	}
-	return String();
+		return String();
 	}
 
 public:
@@ -217,7 +220,6 @@ public:
 		if (request->hasParam(PARAM_INPUT_1) && request->hasParam(PARAM_INPUT_2)) {
 			inputMessage1 = request->getParam(PARAM_INPUT_1)->value();
 			inputMessage2 = request->getParam(PARAM_INPUT_2)->value();
-			digitalWrite(inputMessage1.toInt(), inputMessage2.toInt());
 		}
 		else {
 			inputMessage1 = "No message sent";
@@ -230,6 +232,8 @@ public:
 		state         = strtoll(inputMessage2.c_str(), nullptr, 10);
 
 		EEPROMSynch::instance.setLampState(light_changed, state);
+		
+		LampOutput::getSingleton().output(EEPROMSynch::instance.getLampStates());
 		EEPROMSynch::instance.sendLampStateToLamp(light_changed);
 		
 		request->send(200, "text/plain", "OK");
