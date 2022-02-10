@@ -34,3 +34,4 @@
 # PlatformIO-Folder
 .pio
 .vscode
+*.bak

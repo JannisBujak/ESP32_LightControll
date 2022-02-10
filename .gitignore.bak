@@ -32,4 +32,5 @@
 *.app
 
 # PlatformIO-Folder
-.pio/build
+.pio
+.vscode
