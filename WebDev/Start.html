@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang en>
+    <head>
+        <meta charset='UTF-8'>
+        <link rel='stylesheet' href='style.css'>
+        <title>Document</title>
+
+    <style>
+            select {
+  -webkit-appearance: none;
+  border-radius: 0px;
+  border-width: 0px;
+  margin-left: 10px;
+}
+body {
+  background-color: black;
+}
+
+.beispiel {
+  color: white;
+  width: 15em;
+  border: 1px solid #333;
+  box-shadow: 8px 8px 5px #444;
+  padding: 8px 12px;
+  background-image: linear-gradient(180deg, #fff, #ddd 40vw, #ccc);
+}
+
+h1 {
+  color: orange;
+  margin-left: 10px;
+}
+
+p {
+  color: orange;
+  margin-left: 10px;
+}
+
+.button {
+  text-align: center;
+  color: white;
+
+  background-color: orangered;
+  
+  opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
+
+  height: 50px;
+  width: 15vw;
+  margin-left: 10px;
+}
+
+.button:hover {
+  opacity: 1; /* Fully shown on mouse-over */
+}
+
+.slidecontainer {
+  width: 50vw; /* Width of the outside container */  
+  float: right;
+  
+  padding-left: 5px;
+  padding-right: 5px;
+}
+/* The slider itself */
+.slider {
+  -webkit-appearance: none;  /* Override default CSS styles */
+  appearance: none;
+  width: 50vw; /* Full-width */
+  height: 40px;
+  background: lightblue; /* Grey background */
+  outline: none; /* Remove outline */
+  opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
+  -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+  transition: .2s;
+}  
+/* Mouse-over effects */
+.slider:hover {
+  opacity: 1; /* Fully shown on mouse-over */
+}
+/* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none; /* Override default look */
+  appearance: none;
+  width: 25px; /* Set a specific slider handle width */
+  height: 50px; /* Slider handle height */
+  background: orangered; /* Green background */
+  border-width: 0px;
+  cursor: pointer /* Cursor on hover */
+}
+.slider::-moz-range-thumb {
+  width: 25px; /* Set a specific slider handle width */
+  height: 50px; /* Slider handle height */
+  background: orangered; /* Green background */
+  border-width: 0px;
+  cursor: pointer; /* Cursor on hover */
+  
+}
+</style>
+    </head>
+    <body>
+        <script>
+            function updateSlider(value) 
+            {    
+                var slider = document.getElementById('span_light');
+                slider.value = value;
+                var chEvent = new Event('change');
+                slider.dispatchEvent(chEvent)
+            }
+            function startUpdate(lamp_nr, value)
+            {
+                var xhr = new XMLHttpRequest();
+                xhr.open("GET", "/update?lamp_nr="+lamp_nr+"&state="+value, true); 
+                xhr.send();
+            }
+        </script>
+        
+        <h1>Empfindlichkeit für Licht einstellen</h1>
+        
+        <div class='beispiel' style='display:flex'; flex-direction: row; justify-content: left; align-items: center>
+          <p>Dies ist ein sehr interessanter Hinweis
+           in einem hübsch dekorierten Kasten.
+          </p>
+          <p>Das ist ein anderer ganz toller text.
+          </p>
+      </div>
+      
+      <p>Schreibtisch</p>
+        <div style='display:flex'; flex-direction: row; justify-content: left; align-items: center>
+            <button class='button' id='btnAfter' onclick='updateSlider(0)'>Immer aus</button>
+
+            <span class='slidecontainer'>
+                <input type='range' min='0' max='10' value='0' class='slider' id='span_light' onchange='startUpdate(0, this.value)'>
+            </span> 
+                        
+            <button class='button' id='btnAfter' onclick='updateSlider(10)'>Immer an</button>
+        </div>
+    </body>
+</html>
